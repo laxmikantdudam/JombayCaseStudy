@@ -1,0 +1,68 @@
+
+<div *ngIf="!loadCaseStudy" class="loader">
+	<div class="inner">
+		<h3>Fetching Data...</h3>
+		<div class="spinner"></div>	
+	</div>
+</div>
+<header *ngIf="loadCaseStudy">
+	<div class="logo">
+		<img src="assets/images/logo.png">
+	</div>
+	<div class="timer-wrap">
+		<div class="item timmer">
+			<i class="fa fa-clock-o"></i>
+			  Time Elapsed: {{sessionStartedTime.mins}}:{{sessionStartedTime.sec}} / {{time}} mins
+		</div>
+		<div class="item exit">
+			<a href="#" (click)="submitCaseStudy()">
+				<i class="fa fa-sign-out"></i>
+				<div>Exit</div>
+			</a>
+		</div>
+	</div>
+</header>
+  
+<div class="case-study-details-wrap" *ngIf="loadCaseStudy">
+	<div class="left-section">
+		<div><a [ngClass]="{active: showCaseStudyFlag}" href="#" (click)="showCaseStudy()">Case</a></div>
+		<h3 [ngClass]="{active: !showCaseStudyFlag}"  (click)="showQuetions(0)">Questions</h3>
+		<ul>
+			<li *ngFor="let question of questions; let i = index;">
+				<a [ngClass]="{active: i == currentQuestion && !showCaseStudyFlag}"  href="#" (click)="showQuetions(i)">Question {{i + 1}}</a>
+			</li>
+		</ul>
+	</div>
+	<div class="right-section">
+		<div *ngIf="!showCaseStudyFlag">
+			<h3 class="question-no">Question {{currentQuestion+1}}</h3>
+			
+			<div *ngFor="let question of questions;let i = index">
+				<!-- <div > {{i}} {{question.body}}</div> -->
+				<div *ngIf="i==currentQuestion" class="questions-page">
+					<div [innerHTML]="question.body" class="question"></div>
+					<div class="answer-wrap">
+						<h4>Answer:</h4>
+						<textarea [(ngModel)]="question.answer"></textarea>
+					</div>	
+				</div>
+			</div>
+			
+			<div class="next-prev-wrap">
+				<button class="btn pull-left" *ngIf="currentQuestion" (click)="changeQuestion('prev')">Previous</button>
+				<button class="btn pull-right" *ngIf="currentQuestion < questions.length - 1" (click)="changeQuestion('next')">Save &amp; Next</button>
+				<button class="btn btn-orange pull-right" *ngIf="currentQuestion == questions.length - 1" (click)="submitCaseStudy()">Submit &amp; Exit</button>
+			</div>
+		</div>
+		<div *ngIf="showCaseStudyFlag">
+			<h3 class="casestudy-name">{{caseStudyName}}</h3>
+			<div [innerHTML]="page.body" class="casestudy-page"></div>
+			<div class="currentPageNo">Page {{currentPage+1}} / {{pages.length}}</div>
+			<div class="next-prev-wrap">
+				<button class="btn btn-default pull-left" *ngIf="currentPage" (click)="changePage('prev')">Previous</button>
+				<button class="btn btn-default pull-right" *ngIf="currentPage < pages.length - 1" (click)="changePage('next')">Next Page</button>
+				<button class="btn btn-orange pull-right" *ngIf="currentPage == pages.length - 1" (click)="showQuetions(0)">Go To Questions</button>
+			</div>
+		</div>
+	</div>
+</div>

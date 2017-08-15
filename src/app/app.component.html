@@ -1,0 +1,12 @@
+<!-- <app-header></app-header> -->
+<div *ngIf="!getAuthrization" class="loader">
+	<div class="inner">
+		<h3>Authenticating...</h3>
+		<div class="spinner"></div>	
+	</div>
+</div>
+<div *ngIf="getAuthrization">
+	<app-case-study></app-case-study>	
+</div>
+
+
